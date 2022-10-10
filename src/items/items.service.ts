@@ -25,4 +25,8 @@ export class ItemsService {
     findItem.status = ItemStatus.SOLD_OUT
     return findItem
   }
+
+  delete(id: string): void {
+    this.items = this.items.filter((item) => item.id !== id)
+  }
 }
