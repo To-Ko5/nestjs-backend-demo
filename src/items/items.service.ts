@@ -13,12 +13,12 @@ export class ItemsService {
   ) {}
   private items: Item[] = []
 
-  findAll(): Item[] {
-    return this.items
+  async findAll(): Promise<Item[]> {
+    return await this.itemsRepository.find()
   }
 
-  findById(id: string): Item {
-    const findItem = this.items.find((item) => item.id === id)
+  async findById(id: string): Promise<Item> {
+    const findItem = await this.itemsRepository.findOne(id)
     if (!findItem) {
       throw new NotFoundException()
     }
@@ -39,11 +39,11 @@ export class ItemsService {
     return item
   }
 
-  updateStatus(id: string): Item {
-    const findItem = this.items.find((item) => item.id === id)
-    findItem.status = ItemStatus.SOLD_OUT
-    return findItem
-  }
+  // updateStatus(id: string): Item {
+  //   const findItem = this.items.find((item) => item.id === id)
+  //   findItem.status = ItemStatus.SOLD_OUT
+  //   return findItem
+  // }
 
   delete(id: string): void {
     this.items = this.items.filter((item) => item.id !== id)
