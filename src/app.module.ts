@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { ItemsModule } from './items/items.module'
+import { AuthModule } from './auth/auth.module'
 @Module({
   imports: [
-    ItemsModule,
     ConfigModule.forRoot({ envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -20,7 +20,9 @@ import { ItemsModule } from './items/items.module'
         entitiesDir: 'src/entities',
         migrationsDir: 'src/migrations'
       }
-    })
+    }),
+    ItemsModule,
+    AuthModule
   ],
   controllers: [],
   providers: []
