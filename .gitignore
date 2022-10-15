@@ -40,3 +40,6 @@ docker-compose.yaml
 
 # env
 .env
+
+#migrations
+/src/migrations
