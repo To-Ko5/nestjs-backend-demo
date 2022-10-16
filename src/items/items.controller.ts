@@ -39,10 +39,10 @@ export class ItemsController {
   @Role(UserStatus.PREMIUM)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async create(
-    @Body() CreateItemDto: CreateItemDto,
+    @Body() createItemDto: CreateItemDto,
     @GetUser() user: User
   ): Promise<Item> {
-    return await this.itemsService.create(CreateItemDto, user)
+    return await this.itemsService.create(createItemDto, user)
   }
 
   @Patch(':id')
