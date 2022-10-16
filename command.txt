@@ -1,0 +1,17 @@
+npx typeorm migration:generate -n CreateItem
+
+npx typeorm migration:run
+
+npm run start:dev
+
+nest g module auth
+
+nest g service items --no-spec
+
+nest g controller items --no-spec
+
+npx typeorm migrations:generate -n AddRelation
+
+docker-compose up -d
+
+docker stop $(docker ps -q)
