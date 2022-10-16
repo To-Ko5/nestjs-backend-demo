@@ -5,7 +5,7 @@ import { ItemsModule } from './items/items.module'
 import { AuthModule } from './auth/auth.module'
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
