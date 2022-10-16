@@ -43,13 +43,19 @@ export class ItemsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-    return await this.itemsService.updateStatus(id)
+  async updateStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User
+  ): Promise<Item> {
+    return await this.itemsService.updateStatus(id, user)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    this.itemsService.delete(id)
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User
+  ): Promise<void> {
+    this.itemsService.delete(id, user)
   }
 }

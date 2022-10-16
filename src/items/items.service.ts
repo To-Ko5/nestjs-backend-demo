@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/entities/user.entity'
 import { Repository } from 'typeorm'
@@ -41,15 +45,22 @@ export class ItemsService {
     return item
   }
 
-  async updateStatus(id: string): Promise<Item> {
+  async updateStatus(id: string, user: User): Promise<Item> {
     const findItem = await this.itemsRepository.findOne(id)
+    if (findItem.userId === user.id) {
+      throw new BadRequestException('自身の商品です。')
+    }
     findItem.status = ItemStatus.SOLD_OUT
     findItem.updatedAt = new Date().toISOString()
     this.itemsRepository.save(findItem)
     return findItem
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, user: User): Promise<void> {
+    const item = await this.findById(id)
+    if (item.userId !== user.id) {
+      throw new BadRequestException('他人の商品です。')
+    }
     this.itemsRepository.delete(id)
   }
 }
