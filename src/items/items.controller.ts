@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,14 +8,18 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common'
 import { CreateItemDto } from './dto/create-item.dto'
 import { Item } from '../entities/item.entity'
 import { ItemsService } from './items.service'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { GetUser } from 'src/auth/decorator/get-user.decorator'
+import { User } from 'src/entities/user.entity'
 
 @Controller('items')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
@@ -29,8 +34,11 @@ export class ItemsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() CreateItemDto: CreateItemDto): Promise<Item> {
-    return await this.itemsService.create(CreateItemDto)
+  async create(
+    @Body() CreateItemDto: CreateItemDto,
+    @GetUser() user: User
+  ): Promise<Item> {
+    return await this.itemsService.create(CreateItemDto, user)
   }
 
   @Patch(':id')
